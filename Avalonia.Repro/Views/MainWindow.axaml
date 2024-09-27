@@ -17,8 +17,32 @@
     </Design.DataContext>
 
   <TabControl>
-    <TabItem Header="Timer - ArcSegment">
+    <TabItem Header="Timer - ArcSegment" >
       <controls:ArcTimerControl Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </TabItem>
+    <TabItem Header="Datagrid in Scrollviewver">
+      <ScrollViewer Padding="100, 0, 100, 0">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Column="0" Text="Part1" />
+          <TextBlock Grid.Column="1" Text="Part2" />
+          <TextBlock Grid.Column="2" Text="Part3" />
+          <TextBlock Grid.Column="3" Text="Part4" />
+          <DataGrid Grid.ColumnSpan="4" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="Test1" />
+              <DataGridTextColumn Header="Test1" />
+              <DataGridTextColumn Header="Test1" />
+              <DataGridTextColumn Header="Test1" Width="*" />
+            </DataGrid.Columns>
+          </DataGrid>
+        </Grid>
+      </ScrollViewer>
     </TabItem>
   </TabControl>
 </Window>
