@@ -6,7 +6,7 @@ using Avalonia.Media;
 using System;
 using System.Threading;
 
-namespace Intrinsic.Shared.Controls;
+namespace Avalonia.Repro.Controls;
 
 public partial class ArcTimerControl : UserControl
 {

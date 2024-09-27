@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:controls="clr-namespace:Avalonia.Repro.Controls;assembly=Avalonia.Repro"
         x:Class="Avalonia.Repro.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
@@ -15,6 +16,9 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+  <TabControl>
+    <TabItem Header="Timer - ArcSegment">
+      <controls:ArcTimerControl Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </TabItem>
+  </TabControl>
 </Window>

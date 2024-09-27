@@ -5,7 +5,7 @@
              xmlns:conv="clr-namespace:Avalonia.Repro.Converter;assembly=Avalonia.Repro"
              xmlns:local="clr-namespace:Avalonia.Repro.Controls;assembly=Avalonia.Repro"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Intrinsic.Shared.Controls.ArcTimerControl">
+             x:Class="Avalonia.Repro.Controls.ArcTimerControl">
   <UserControl.Resources>
     <conv:ValueToTimespanStringConverter x:Key="timeconverter"/>
     <conv:BooleanToOpacityConverter x:Key="opacityconverter" Active="1" Default="0.7"/>
