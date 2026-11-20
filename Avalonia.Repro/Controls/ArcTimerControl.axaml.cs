@@ -20,11 +20,10 @@ public partial class ArcTimerControl : UserControl
             Segment = segment ?? throw new ArgumentNullException(nameof(segment));
             Figure = figure ?? throw new ArgumentNullException(nameof(figure));
         }
-        public void SetPosition(Point startpoint, Point endpoint, double radius, double arcangle)
+        public void SetPosition(Point startpoint, Point endpoint, double radius)
         {
             Figure.StartPoint = startpoint;
             Segment.Size = new Size(radius, radius);
-            Segment.RotationAngle = arcangle;
             Segment.Point = endpoint;
         }
     }
@@ -200,19 +199,19 @@ public partial class ArcTimerControl : UserControl
         HandleMinutes(Minutes);
         HandleHours(Hours, Hours >= 12);
     }
-    private ArcSegment CreateArc(Point point, double radius, double phi, SweepDirection direction, bool islarge)
+    private ArcSegment CreateArc(Point point, double radius, SweepDirection direction, bool islarge)
     {
         return new ArcSegment()
         {
             Size = new Size(radius, radius),
             SweepDirection = direction,
             IsLargeArc = islarge,
-            RotationAngle = phi,
+            RotationAngle = 0,
             Point = point,
         };
     }
 
-    private Point CreatePoint(double x, double y, double radius, double phi) => new Point(x + radius * Math.Cos(-phi + 0.5 * Math.PI), y - radius * Math.Sin(phi + 0.5 * Math.PI));
+    private Point CreatePoint(double x, double y, double radius, double phi) => new Point(x + radius * Math.Cos(-phi + 0.5 * Math.PI), y - radius * Math.Sin(-phi + 0.5 * Math.PI));
     private PathGeometry CreateGeometry(double xcenter, double ycenter, double radius, int elements)
     {
         PathGeometry pathgeometry = new PathGeometry();
@@ -224,7 +223,7 @@ public partial class ArcTimerControl : UserControl
             Point startpointouter = CreatePoint(xcenter, ycenter, radius, i * arcspan - arcwidth);
             Point endpointouter = CreatePoint(xcenter, ycenter, radius, i * arcspan + arcwidth);
 
-            PathFigure figure = GeneratePathFigure(startpointouter, endpointouter, radius, 2 * arcwidth, out _);
+            PathFigure figure = GeneratePathFigure(startpointouter, endpointouter, radius, out _);
             pathgeometry.Figures.Add(figure);
         }
 
@@ -237,19 +236,20 @@ public partial class ArcTimerControl : UserControl
         Point startpointouter = CreatePoint(xcenter, ycenter, radius, position * arcspan - arcwidth);
         Point endpointouter = CreatePoint(xcenter, ycenter, radius, position * arcspan + arcwidth);
 
-        PathFigure figure = GeneratePathFigure(startpointouter, endpointouter, radius, 2 * arcwidth, out ArcSegment segment);
+        PathFigure figure = GeneratePathFigure(startpointouter, endpointouter, radius, out ArcSegment segment);
         PathGeometry pathgeometry = new PathGeometry();
         pathgeometry.Figures.Add(figure);
 
         indicator = new IndicatorHelper(figure, segment);
         return pathgeometry;
     }
-    private PathFigure GeneratePathFigure(Point startpoint, Point endpoint, double radius, double arcspan, out ArcSegment segment)
+    private PathFigure GeneratePathFigure(Point startpoint, Point endpoint, double radius, out ArcSegment segment)
     {
-        segment = CreateArc(endpoint, radius, arcspan, SweepDirection.Clockwise, false);
+        segment = CreateArc(endpoint, radius, SweepDirection.Clockwise, false);
         PathFigure figure = new PathFigure()
         {
             StartPoint = startpoint,
+            IsClosed = false,
             Segments = { segment },
         };
         return figure;
@@ -421,7 +421,7 @@ public partial class ArcTimerControl : UserControl
         Point startpoint = CreatePoint(xoffset, yoffset, radius, startangle);
         Point endpoint = CreatePoint(xoffset, yoffset, radius, endangle);
 
-        indicator.SetPosition(startpoint, endpoint, radius, 2 * arcwidth);
+        indicator.SetPosition(startpoint, endpoint, radius);
     }
 
     private void PathMouseWheel(object sender, PointerWheelEventArgs e)
